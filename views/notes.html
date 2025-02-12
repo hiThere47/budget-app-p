@@ -1,0 +1,42 @@
+line 26 code was crucial in maintaining css integrity
+
+2/7/2025: so now i'm going to work on a universal storage practice to just
+put out a reasonably usable version
+
+
+1. Local Storage (Best for Simplicity & Persistence)
+How it works: Stores key-value pairs in the browser and persists even after closing the browser or shutting down the computer.
+Pros:
+Easy to use (localStorage.setItem() and localStorage.getItem()).
+Data persists until manually cleared (no need to open the console).
+Cons:
+Only stores strings (you must JSON.stringify() objects before saving).
+Limited to around 5MB per domain.
+
+2. IndexedDB (Best for Large & Structured Data)
+How it works: A client-side NoSQL database built into browsers.
+Pros:
+Can store large amounts of data (hundreds of MBs).
+Supports structured data (objects, arrays, blobs, etc.).
+Cons:
+More complex API compared to localStorage.
+Data persists until manually deleted.
+Use when: You need to store large datasets, complex structures, or offline web applications.
+
+3. Server-Side Storage (Best for Long-Term & Cross-Device Persistence)
+How it works: Stores data on a remote server (e.g., MongoDB, MySQL, Firebase).
+Pros:
+Data is accessible across multiple devices.
+No storage limits like local browser storage.
+Cons:
+Requires backend setup.
+Needs internet access.
+Use when: You want user data to persist across multiple devices or sessions.
+
+Which is Best for You?
+If you just want to store simple data that persists across browser sessions, use Local Storage.
+If you need to store large structured data (like todo lists or settings), use IndexedDB.
+If you want data to be saved across multiple devices, use server-side storage.
+
+
+Looks like i'm going to use the IndexedDB

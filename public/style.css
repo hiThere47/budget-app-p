@@ -1,0 +1,52 @@
+h1 {
+    text-align: center;
+}
+
+/* Style for each input group */
+.input-group {
+    margin-bottom: 50px; /* Space between input groups */
+    display: flex;
+    flex-direction: column; /* Stack the top-row and under-input container vertically */
+    gap: 10px; /* Space between rows */
+}
+
+/* Style for the top-row (h3 and inline input) */
+.top-row {
+    display: flex;
+    align-items: center; /* Vertically align h3 and input */
+    gap: 10px; /* Space between h3 and the input next to it */
+}
+
+/* Inline input next to the h3 */
+.inline-input {
+    width: 70px; /* Set width for inline input */
+}
+
+/* Container for under-inputs to handle wrapping */
+.under-input-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Allow inputs to wrap to the next line */
+    gap: 10px; /* Add space between inputs */
+}
+
+/* Individual input box */
+.under-input {
+    display: inline-block;
+    width: 70px; /* Fixed width */
+    margin-bottom: 10px; /* Add spacing below for better wrapping */
+}
+
+.upDateRemaining{
+    width: 70px;
+    
+}
+
+
+
+/*for remaining page*/
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjusts spacing between elements */
+}
