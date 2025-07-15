@@ -1,4 +1,253 @@
+
+
+
+7-7-2025: make button function across pages for planPage, remainPage, and spentPage
+
+
+
+
+
+6-23-2025: on spent page, the totals in the inline inputs don't save, also codes for new sections aren't working like the working sections
+
+<div class="input-group" data-section="savings">
+    <h3>Savings</h3>
+    <input type="text" class="inline-input section-total" placeholder="Total for savings">
+    <input type="text" class="under-input" placeholder="Enter amount">
+</div>
+
+I can you use that setup above me when adding new sections in spentPage,js
+
+
+
+6-22-2025(parents anniversity): still working on giving section and wanting totals to add up and then save
+
+
+6-19-2025: now i want to work on the giving section of the spending page.
+
+
+
+6-12-2025: -Planning page works however in a ghetto way. i have to back space in an input box to see sum value.
+           -Numbers get added to remaining page only when numbers are in the Planning page input box not letters.
+           -Only one input box gets stored in local storage. so all amounts have to be in the first input box if you want it to be stored.
+           -Things update in real time but in a ghetto way. and only sometimes in certain sections as what i see right now. like in the giving section
+           -Only one input box (the first one) can have its totals get transferred to the remaining page for some sections(right now its the savings section)
+           -Only the inline input boxes on the remaining page get saved in local storage. and only the numbers no letters get saved.
+           -Lifestyle all the way to extra do not work at all.
+           -second input box from insurance and bills and beyond gets added to overall remaining box NOT its respective remaining box
+           -there is no showing of the dividing of totals in each section
+           -i have to add negative values in plan insursnce snd bills to change insurance and bill remaining page----- just fixed this
+           -opening other input boxes in the remainig page in respective sections does not work well
+           -"plan to spend" and "to beat last year spread" spaces need to be put
+           -space to put unused checks
+           -no spaces for tithe yet
+           -if i wanted to start fresh pages i wouldn't be able to. i would have to erase what i have on my page
+           -can't manually input decimals in remaining page and the manual input is a little messy.
+           -right now can't clear totals in one swoop
+           -can't get rid of input boxes, once they are there they are there
+           -space for planning total and spread goal total in planning page
+           -second input box in income session in FIRST planning page only works across pages (the button function works)
+           -for some reason the remaining page income total changes when it wants to especially in times where you reload your page
+           -when subtracting amounts it calculates unecessary numbers but this in a bootleg version without a subtracting button from the spent page
+           -for some reason everything justt deleted. happened again in my remaining page
+           -on remainPage and probably the other pages after hitting the clear button in its section the underinputs disappear and then you have to hit refresh for them to come back
+
+
+
+
+
+
+
+
+
+
+
+
+// For button click functionality for food section
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (event) {
+        if (event.target.classList.contains('forFoodRemainBut')) {
+            const inputBox = event.target.previousElementSibling;
+            let value = parseFloat(inputBox.value) || 0;
+
+            let currentTotal = parseFloat(localStorage.getItem('sharedFood')) || 0;
+            currentTotal += value;
+            localStorage.setItem('sharedFood', currentTotal);
+            window.dispatchEvent(new Event('storage'));
+
+            // Find the checkbox next to the clicked button and check it
+            const checkBox = event.target.nextElementSibling;
+            if (checkBox && checkBox.type === 'checkbox') {
+                checkBox.checked = true;
+            }
+        }
+    });
+});
+
+
+
+
+// For receiving values on another page food section
+document.addEventListener('DOMContentLoaded', function () {
+    const foodReceiverInput = document.getElementById("foodReceiver");
+
+    // Function to update input value from localStorage
+    function updatefoodReceiver() {
+        const content = localStorage.getItem('sharedFood') || "0";
+        const numbers = content.match(/-?\d+(\.\d+)?/g); // Extract numbers
+        foodReceiverInput.value = numbers ? numbers.join(" ") : "0"; // Join numbers into a string
+    }
+
+    // Load saved value when page loads
+    updatefoodReceiver();
+
+    // Sync when storage changes (other page updates)
+    window.addEventListener('storage', updatefoodReceiver);
+
+    // Save manually entered values
+    foodReceiverInput.addEventListener("input", function () {
+        localStorage.setItem('sharedFood', foodReceiverInput.value);
+        window.dispatchEvent(new Event('storage')); // Update across pages
+    });
+});
+
+
+
+// For button click functionality for lifestyle section
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (event) {
+        if (event.target.classList.contains('forLifestyleRemainBut')) {
+            const inputBox = event.target.previousElementSibling;
+            let value = parseFloat(inputBox.value) || 0;
+
+            let currentTotal = parseFloat(localStorage.getItem('sharedLifestyle')) || 0;
+            currentTotal += value;
+            localStorage.setItem('sharedLifestyle', currentTotal);
+            window.dispatchEvent(new Event('storage'));
+
+            // Find the checkbox next to the clicked button and check it
+            const checkBox = event.target.nextElementSibling;
+            if (checkBox && checkBox.type === 'checkbox') {
+                checkBox.checked = true;
+            }
+        }
+    });
+});
+
+
+
+
+// For receiving values on another page lifestyle section
+document.addEventListener('DOMContentLoaded', function () {
+    const lifestyleReceiverInput = document.getElementById("lifestyleReceiver");
+
+    // Function to update input value from localStorage
+    function updatelifestyleReceiver() {
+        const content = localStorage.getItem('sharedLifestyle') || "0";
+        const numbers = content.match(/-?\d+(\.\d+)?/g); // Extract numbers
+        lifestyleReceiverInput.value = numbers ? numbers.join(" ") : "0"; // Join numbers into a string
+    }
+
+    // Load saved value when page loads
+    updatelifestyleReceiver();
+
+    // Sync when storage changes (other page updates)
+    window.addEventListener('storage', updatelifestyleReceiver);
+
+    // Save manually entered values
+    lifestyleReceiverInput.addEventListener("input", function () {
+        localStorage.setItem('sharedLifestyle', lifestyleReceiverInput.value);
+        window.dispatchEvent(new Event('storage')); // Update across pages
+    });
+});
+
+
+index.ejs for food section:
+
+<div class="input-group">
+        <div class="top-row">
+            <h3>Food</h3>
+            <input type="text" class="inline-input foodInput" id="incomeInput" type="number" placeholder="Enter income">
+            
+        
+        </div>
+    <div>
+            <input type="text" class="under-input forIncome forRemainIncome foodInput">
+            <button class="forFoodRemainBut">add to food-remaining</button>
+            <input type="checkbox" name="" id="">
+        
+    </div>
+    </div>
+
+remainingPage.ejs for food section:
+
+      <div class="input-group">
+        <div class="top-row">
+            <h3>Food</h3>
+            <input type="text" id="foodReceiver" class="inline-input" id="foodReceiver" type="number" placeholder="Enter income">
+                                    
+                                
+        </div>
+        <div>
+            <input type="text" class="under-input forIncome forRemainIncome foodUnderReceivers">
+
+
+index.ejs for lifestyle section
+              <div class="input-group">
+        <div class="top-row">
+            <h3>Lifestyle</h3>
+            <input type="text" class="inline-input lifestyleInput" id="incomeInput" type="number" placeholder="Enter income">
+            
+        
+        </div>
+    <div>
+            <input type="text" class="under-input forIncome forRemainIncome lifestyleInput">
+            <button class="forLifestyleRemainBut">add to lifestyle-remaining</button>
+            <input type="checkbox" name="" id="">
+
+
+  remainingPage.ejs for lifestyle section:
+
+  <div class="input-group">
+        <div class="top-row">
+            <h3>Lifestyle</h3>
+            <input type="text" id="lifeStyleReceiver" class="inline-input" id="lifeStyleReceiver" type="number" placeholder="Enter income">
+                                            
+                                        
+        </div>
+        <div>
+            <input type="text" class="under-input forIncome forRemainIncome lifestyleUnderReceivers">
+
+            All the code that is dealing with food across the two different pages works, however the code dealing with the lifestyle sections across the two different ejs pages 
+            does not. I tried to make the code dealing with the lifestyle section identical to the code dealing with the food section however it was not working. when i press
+            the "add to lifestyle remaining" button the value does not go to the input with "lifestyle remaining" button. Can you help me?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 line 26 code was crucial in maintaining css integrity
+
+
+
+
+
+3/12/2025: left off at setting up remaining page then i have to go to JS to fix sending and receiving parts
+
+
+****2/15/2025****: So it looks like i'm almost done in completing a ghetto version of the app. you have to manually do somethings.
+#1 you have to JUST type the number value first and then send it over before writing any letters or title for the value. #2 for the local storage type all your contents into one inputbox
+and then you would have to use some indicator to make the contents distinguish from each other. then to see all the contents just type one thing or back space on one thing.
+
 
 2/7/2025: so now i'm going to work on a universal storage practice to just
 put out a reasonably usable version

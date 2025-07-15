@@ -27,6 +27,21 @@ app.get('/remainingPage', (req, res)=>{
     res.render('remainingPage')
 })
 
+
+
+app.get('/remainPage', (req, res)=>{
+    console.log('Serving your Remain page')
+    res.render('remainPage')
+})
+
+
+
+
+app.get('/planPage', (req, res)=>{
+    console.log('Serving your Plan page')
+    res.render('planPage')
+})
+
 // Handle WebSocket connections, NEW
 // io.on('connection', (socket) => {
 //     console.log('A user connected');
