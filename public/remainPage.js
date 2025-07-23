@@ -29,15 +29,43 @@ document.addEventListener('keydown', function (event) {
 document.addEventListener('DOMContentLoaded', function () {
     restoreSections();
     restoreIncomeInputs(); // <-- Add this line
+    applyPendingAmount(); // <-- Add this line for the remain income receiver box to get the values being sent to it
 });
 
 
+//this is to help line 32
+function applyPendingAmount() {
+    const pending = parseFloat(localStorage.getItem('pendingAmount')) || 0;
+    if (pending > 0) {
+        const receiver = document.getElementById('receiver');
+
+        // Grab current value from input (not from restoreIncomeInputs)
+        const current = parseFloat(receiver.value) || 0;
+        const updated = current + pending;
+
+        receiver.value = updated;
+
+        // Save the new value in localStorage so it sticks on reload
+        const cashReceiver = document.getElementById('cashReceiver').value;
+
+        localStorage.setItem('incomeData', JSON.stringify({
+            receiver: updated,
+            cashReceiver
+        }));
+
+        // Clear the pending amount so it's not applied again
+        localStorage.removeItem('pendingAmount');
+    }
+}
 
 
 
 
 
-//adds up totals in input-boxe
+
+
+
+//adds up totals in input-boxes
 document.addEventListener('input', function (event) {
     // Resize input dynamically
     if (event.target.tagName === 'INPUT') {
@@ -213,3 +241,69 @@ document.querySelectorAll('.reset-section').forEach(button => {
         updateTotalIncome(); // Refresh the overall total
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//lines 230 to 238
+// document.addEventListener('DOMContentLoaded', function () {
+//     const receiver = document.getElementById('receiver');
+//     const storedValue = localStorage.getItem('sentAmount');
+
+//     if (receiver && storedValue) {
+//         receiver.value = storedValue;
+//         localStorage.removeItem('sentAmount'); // optional
+//     }
+// });

@@ -20,6 +20,8 @@ document.addEventListener('keydown', function (event) {
             newInput.placeholder = currentInput.placeholder || '';
             currentInput.parentNode.insertBefore(newInput, currentInput.nextSibling);
             newInput.focus();
+            const underInputs = inputGroup.querySelectorAll('.under-input');
+            saveSection(sectionName, underInputs); // this is already syncing to localStorage
         }
     }
 });
@@ -113,11 +115,9 @@ function restoreSections() {
 
             // Create and append new inputs
             values.forEach(val => {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'under-input';
-                input.value = val;
-                container.appendChild(input);
+                const inputWrapper = createUnderInput(val);
+                container.appendChild(inputWrapper);
+
             });
         }
     });
@@ -182,3 +182,128 @@ document.querySelectorAll('.reset-section').forEach(button => {
         updateTotalIncome(); // Refresh the overall total
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createUnderInput(value = '') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'under-input-wrapper';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'under-input';
+    input.placeholder = 'Enter amount';
+    input.value = value;
+
+    const sendButton = document.createElement('button');
+    sendButton.textContent = 'Send';
+    sendButton.className = 'send-to-receiver';
+    sendButton.addEventListener('click', () => {
+    const numberOnly = input.value.match(/-?\d+(\.\d+)?/g);
+    if (!numberOnly) {
+        alert('Please enter a valid number.');
+        return;
+    }
+
+    const newAmount = numberOnly.reduce((acc, num) => acc + parseFloat(num), 0);
+
+    // Retrieve any existing pendingAmount from localStorage
+    const existing = parseFloat(localStorage.getItem('pendingAmount')) || 0;
+
+    // Accumulate and save
+    const updatedAmount = existing + newAmount;
+    localStorage.setItem('pendingAmount', updatedAmount);
+
+    alert(`Sent ${newAmount} to receiver input on other page.`);
+});
+
+
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(sendButton);
+
+    return wrapper;
+}
+
+
+
+
+
+
+
+const newInputWrapper = createUnderInput();
+currentInput.parentNode.insertBefore(newInputWrapper, currentInput.nextSibling);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//*******line 198 to 220 */
+// function createUnderInput(value = '') {
+//     const wrapper = document.createElement('div');
+//     wrapper.className = 'under-input-wrapper';
+
+//     const input = document.createElement('input');
+//     input.type = 'text';
+//     input.className = 'under-input';
+//     input.placeholder = 'Enter amount';
+//     input.value = value;
+
+//     const sendButton = document.createElement('button');
+//     sendButton.textContent = 'Send';
+//     sendButton.className = 'send-to-receiver';
+//     sendButton.addEventListener('click', () => {
+//         localStorage.setItem('sentAmount', input.value);
+//         alert(`Sent "${input.value}" to receiver input on other page.`);
+//     });
+
+//     wrapper.appendChild(input);
+//     wrapper.appendChild(sendButton);
+
+//     return wrapper;
+//}
+
